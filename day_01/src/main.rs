@@ -48,4 +48,5 @@ fn main() {
         .sum();
 
     println!("{result}");
+    assert_eq!(result, 54019);
 }
