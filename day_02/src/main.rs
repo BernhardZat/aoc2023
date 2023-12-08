@@ -43,5 +43,6 @@ fn main() {
             game_id * is_valid_game
         })
         .sum();
-    println!("{result}")
+    println!("{result}");
+    assert_eq!(result, 2727);
 }
