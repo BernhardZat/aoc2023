@@ -1,48 +1,77 @@
-fn main() {
-    let input = std::fs::read_to_string("input").unwrap();
-
-    let result: i32 = input
+fn first_part(input: &String) -> i32 {
+    input
         .lines()
         .map(|line| {
             let mut words = line.split_whitespace().skip(1);
             let game_id = String::from(words.next().unwrap().trim_end_matches(':'))
                 .parse::<i32>()
                 .unwrap();
-            let mut current_value = 0;
-            let mut is_valid_game = 1;
+            let mut value = 0;
+            let mut is_valid = 1;
             while let Some(word) = words.next() {
                 if let Ok(number) = String::from(word).parse::<i32>() {
-                    current_value = number;
+                    value = number;
                 } else {
-                    let color = word
-                        .trim_end_matches(|char| match char {
-                            ',' => true,
-                            ';' => true,
-                            _ => false,
-                        });
+                    let color = word.trim_end_matches(|c| c == ',' || c == ';');
                     match color {
                         "red" => {
-                            if current_value > 12 {
-                                is_valid_game = 0;
+                            if value > 12 {
+                                is_valid = 0;
                             }
                         }
                         "green" => {
-                            if current_value > 13 {
-                                is_valid_game = 0;
+                            if value > 13 {
+                                is_valid = 0;
                             }
                         }
                         "blue" => {
-                            if current_value > 14 {
-                                is_valid_game = 0;
+                            if value > 14 {
+                                is_valid = 0;
                             }
                         }
                         _ => unreachable!(),
                     }
                 }
             }
-            game_id * is_valid_game
+            game_id * is_valid
         })
-        .sum();
-    println!("{result}");
-    assert_eq!(result, 2727);
+        .sum()
+}
+
+fn second_part(input: &String) -> i32 {
+    input
+        .lines()
+        .map(|line| {
+            let mut red = vec![0];
+            let mut green = vec![0];
+            let mut blue = vec![0];
+            let rounds = line.split(|char| char == ':' || char == ';').skip(1);
+            for round in rounds {
+                let mut words = round.split_whitespace();
+                let mut value = 0;
+                while let Some(word) = words.next() {
+                    if let Ok(number) = String::from(word).parse::<i32>() {
+                        value = number;
+                    } else {
+                        let color = word.trim_end_matches(',');
+                        match color {
+                            "red" => red.push(value),
+                            "green" => green.push(value),
+                            "blue" => blue.push(value),
+                            _ => unreachable!(),
+                        }
+                    }
+                }
+            }
+            red.iter().max().unwrap() * green.iter().max().unwrap() * blue.iter().max().unwrap()
+        })
+        .sum()
+}
+
+fn main() {
+    let input = std::fs::read_to_string("input").unwrap();
+    let first_part = first_part(&input);
+    let second_part = second_part(&input);
+    assert_eq!(second_part, 56580);
+    assert_eq!(first_part, 2727);
 }
