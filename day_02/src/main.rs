@@ -70,8 +70,8 @@ fn second_part(input: &String) -> i32 {
 
 fn main() {
     let input = std::fs::read_to_string("input").unwrap();
-    let first_part = first_part(&input);
-    let second_part = second_part(&input);
-    assert_eq!(second_part, 56580);
-    assert_eq!(first_part, 2727);
+    let first_answer = first_part(&input);
+    let second_answer = second_part(&input);
+    assert_eq!(first_answer, 2727);
+    assert_eq!(second_answer, 56580);
 }

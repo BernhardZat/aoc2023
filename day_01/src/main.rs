@@ -11,9 +11,8 @@ fn evaluate_string(input: &String) -> Option<i32> {
     None
 }
 
-fn main() {
-    let input = std::fs::read_to_string("input").unwrap();
-    let result: i32 = input
+fn second_part(input: &String) -> i32 {
+    input
         .lines()
         .map(|line| {
             let mut calibration_value = 0;
@@ -45,8 +44,11 @@ fn main() {
             }
             calibration_value
         })
-        .sum();
+        .sum()
+}
 
-    println!("{result}");
-    assert_eq!(result, 54019);
+fn main() {
+    let input = std::fs::read_to_string("input").unwrap();
+    let second_answer = second_part(&input);
+    assert_eq!(second_answer, 54019);
 }
